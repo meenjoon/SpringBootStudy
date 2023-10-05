@@ -1,5 +1,6 @@
 package com.mbj.springbootstudy.controller;
 
+import com.mbj.springbootstudy.dto.ProductAddRequestDto;
 import com.mbj.springbootstudy.dto.ProductDto;
 import com.mbj.springbootstudy.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,18 @@ public class ProductController {
             return new ResponseEntity<>("현재 id로 조회되는 Product가 없습니다.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(product , HttpStatus.OK);
+    }
+
+
+    // [EX] ("/product/add") ProductAddRequestDto 타입을 받아 DB에  Product 저장
+    @PostMapping(value = "/add")
+    public ResponseEntity<?> productCreate(@RequestBody ProductAddRequestDto productAddDto){
+        try {
+            productService.create(productAddDto);
+            return new ResponseEntity<>("Product 저장 완료", HttpStatus.CREATED);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
